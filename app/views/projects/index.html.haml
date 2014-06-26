@@ -1,31 +1,49 @@
-%h2 Список дел
-%div{"ng-controller" => "TodoCtrl"}
-  %span Осталось  из
-  [
-  %a{href: "", "ng-click" => "archive()"} архив
-  ]
-  %ul.unstyled
-    %li{"ng-repeat" => "todo in todos"}
-      %input{"ng-model" => "todo.done", type: "checkbox"}/
-      %span{class: "done-"}
-  %form{"ng-submit" => "addTodo()"}
-    %input{"ng-model" => "todoText", placeholder: "впишите новое дело", size: "30", type: "text"}/
-    %input.btn-primary{type: "submit", value: "добавить"}/
+/ %h2 Список дел
+/ %div{"ng-controller" => "TodoCtrl"}
+/   %span Осталось {{remaining()}} из {{todos.length}}
+/   %a{href: "", "ng-click" => "archive()"} архив
+/   %ul.unstyled
+/     %li{"ng-repeat" => "todo in todos"}
+/       %input{"ng-model" => "todo.done", type: "checkbox"}/
+/       %span{class: "done-{{todo.done}}"} {{todo.text}}
+/   %form{"ng-submit" => "addTodo()"}
+/     %input{"ng-model" => "todoText", placeholder: "впишите новое дело", size: "30", type: "text"}/
+/     %input.btn-primary{type: "submit", value: "добавить"}/
 
-/ %h1 LTD Lit
+%h1 SIMPLE TODO LIST
+%h2 FROM RUBY GARAGE
 
-/ %table
-/   %tr
-/     %th
-/     %th
-/     %th
+- @projects.each do |project|
+  .row.project
+    .row.pr_title
+      .col-md-10
+        %span.glyphicon.glyphicon-calendar
+        = project.name
+      .col-md-2
+        .pull-right
+          = link_to '', edit_project_path(project), class: 'glyphicon glyphicon-pencil'
+          = link_to '', project, :method => :delete, :data => { :confirm => 'Are you sure?' }, class: 'glyphicon glyphicon-trash'
+    .row.add_task
+      .col-md-12
+        .input-group
+          %span.input-group-addon.glyphicon.glyphicon-plus
+          %input.form-control{type: 'text', placeholder: 'Start typing here to create a task...'}
+          %span.input-group-btn
+            %button.btn.btn-default{type: "button"} Add Task
+    - project.tasks.each do |task|
+      .row.task
+        .col-md-1.chk
+          %input{type: "checkbox"}
+        .col-md-10
+          = task.name
+        .col-md-1.action
+          .pull-right
+            = link_to '', edit_project_task_path(project, task), class: 'glyphicon glyphicon-sort'
+            = link_to '', edit_project_task_path(project, task), class: 'glyphicon glyphicon-pencil'
+            = link_to '', project_task_path(project, task), :method => :delete, :data => { :confirm => 'Are you sure?' }, class: 'glyphicon glyphicon-trash'
 
-/   - @projects.each do |project|
-/     %tr
-/       %td= link_to 'Show', project
-/       %td= link_to 'Edit', edit_project_path(project)
-/       %td= link_to 'Destroy', project, :method => :delete, :data => { :confirm => 'Are you sure?' }
-
-/ %br
-
-/ = link_to 'New Project', new_project_path
+.container
+  %button.add_project
+    %span.glyphicon.glyphicon-plus
+    Add TODO List
+  / = link_to 'Add TODO List', new_project_path

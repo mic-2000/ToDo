@@ -7,8 +7,14 @@
     = csrf_meta_tags
   %body
     .container
-      %header
-        = render 'layouts/navigation'
-      %main{role: "main"}
-        = render 'layouts/messages'
+      - if user_signed_in?
+        %header.container
+          .nav.pull-right
+            = link_to 'Sign out', destroy_user_session_path, :method=>'delete', class: 'navbar-link'
+      = render 'layouts/messages'
+      %main.container{role: "main", class: "#{user_signed_in? ? '' : 'devise'}"}
+
         = yield
+
+.footer
+  .container &copy; Ruby Garage
