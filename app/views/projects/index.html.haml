@@ -1,14 +1,14 @@
-/ %h2 Список дел
-/ %div{"ng-controller" => "TodoCtrl"}
-/   %span Осталось {{remaining()}} из {{todos.length}}
-/   %a{href: "", "ng-click" => "archive()"} архив
-/   %ul.unstyled
-/     %li{"ng-repeat" => "todo in todos"}
-/       %input{"ng-model" => "todo.done", type: "checkbox"}/
-/       %span{class: "done-{{todo.done}}"} {{todo.text}}
-/   %form{"ng-submit" => "addTodo()"}
-/     %input{"ng-model" => "todoText", placeholder: "впишите новое дело", size: "30", type: "text"}/
-/     %input.btn-primary{type: "submit", value: "добавить"}/
+%h2 Список дел
+%div{"ng-controller" => "TodoCtrl"}
+  %span Осталось {{remaining()}} из {{todos.length}}
+  %a{href: "", "ng-click" => "archive()"} архив
+  %ul.unstyled
+    %li{"ng-repeat" => "todo in todos"}
+      %input{"ng-model" => "todo.done", type: "checkbox"}/
+      %span{class: "done-{{todo.done}}"} {{todo.text}}
+  %form{"ng-submit" => "addTodo()"}
+    %input{"ng-model" => "todoText", placeholder: "впишите новое дело", size: "30", type: "text"}/
+    %input.btn-primary{type: "submit", value: "добавить"}/
 
 %h1 SIMPLE TODO LIST
 %h2 FROM RUBY GARAGE
