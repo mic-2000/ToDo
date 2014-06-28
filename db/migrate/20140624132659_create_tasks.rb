@@ -3,8 +3,8 @@ class CreateTasks < ActiveRecord::Migration
     create_table :tasks do |t|
       t.integer     :project_id
       t.string      :name
-      t.datetime    :deadline
-      t.boolean     :done
+      t.date        :deadline
+      t.boolean     :done, default: false
       t.integer     :priority
       t.timestamps
     end

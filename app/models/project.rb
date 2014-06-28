@@ -7,4 +7,6 @@ class Project < ActiveRecord::Base
   default_scope { order(:priority) }
 
   before_create { self.priority = Project.where(user_id: self.user_id).maximum(:priority).to_i + 1 }
+
+  validates :name, presence: true
 end

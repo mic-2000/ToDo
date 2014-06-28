@@ -1,79 +1,50 @@
 class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
 
-  # GET /tasks
-  # GET /tasks.json
   def index
     @project = current_user.projects.find(params[:project_id])
     @tasks = @project.tasks
   end
 
-  # GET /tasks/1
-  # GET /tasks/1.json
-  def show
-  end
-
-  # GET /tasks/new
-  def new
-    @project = current_user.projects.find(params[:project_id])
-    @task = @project.tasks.new
-  end
-
-  # GET /tasks/1/edit
-  def edit
-  end
-
-  # POST /tasks
-  # POST /tasks.json
   def create
     @project = current_user.projects.find(params[:project_id])
     @task = @project.tasks.new(task_params)
-
-    respond_to do |format|
-      if @task.save
-        format.html { redirect_to root_path, notice: 'Task was successfully created.' }
-        format.json { render :show, status: :created, location: @task }
-      else
-        format.html { render :new }
-        format.json { render json: @task.errors, status: :unprocessable_entity }
-      end
+    if @task.save
+      render json: @task, status: :created
+    else
+      render json: @task.errors, status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /tasks/1
-  # PATCH/PUT /tasks/1.json
   def update
-    respond_to do |format|
-      if @task.update(task_params)
-        format.html { redirect_to root_path, notice: 'Task was successfully updated.' }
-        format.json { render :show, status: :ok, location: @task }
-      else
-        format.html { render :edit }
-        format.json { render json: @task.errors, status: :unprocessable_entity }
-      end
+    if @task.update(task_params)
+      render  json: @task, status: :ok
+    else
+      render json: @task.errors, status: :unprocessable_entity
     end
   end
 
-  # DELETE /tasks/1
-  # DELETE /tasks/1.json
   def destroy
     @task.destroy
-    respond_to do |format|
-      format.html { redirect_to root_path, notice: 'Task was successfully destroyed.' }
-      format.json { head :no_content }
+    head :no_content
+  end
+
+  def sort
+    @project = current_user.projects.find(params[:project_id])
+    task_params[:priority].each_with_index do |task_id, index|
+      task = @project.tasks.where(id: task_id).first
+      task.update_attribute('priority', index) if task
     end
+    render nothing: true
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_task
       @project = current_user.projects.find(params[:project_id])
       @task = @project.tasks.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
     def task_params
-      params[:task]
-      params.require(:task).permit(:name, :deadline, :done, :priority)
+      params.require(:task).permit(:name, :deadline, :done, priority: [])
     end
 end

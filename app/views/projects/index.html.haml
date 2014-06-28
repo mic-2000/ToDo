@@ -1,49 +1,50 @@
-%h2 Список дел
-%div{"ng-controller" => "TodoCtrl"}
-  %span Осталось {{remaining()}} из {{todos.length}}
-  %a{href: "", "ng-click" => "archive()"} архив
-  %ul.unstyled
-    %li{"ng-repeat" => "todo in todos"}
-      %input{"ng-model" => "todo.done", type: "checkbox"}/
-      %span{class: "done-{{todo.done}}"} {{todo.text}}
-  %form{"ng-submit" => "addTodo()"}
-    %input{"ng-model" => "todoText", placeholder: "впишите новое дело", size: "30", type: "text"}/
-    %input.btn-primary{type: "submit", value: "добавить"}/
-
 %h1 SIMPLE TODO LIST
 %h2 FROM RUBY GARAGE
 
-- @projects.each do |project|
-  .row.project
+.pr{"ng-controller" => "ProjectsCtrl"}
+  .row.project{"ng-repeat" => "project in projects"}
     .row.pr_title
-      .col-md-10
+      .col-md-1
         %span.glyphicon.glyphicon-calendar
-        = project.name
-      .col-md-2
+      .col-md-9
+        %span.pr_name{"ng-hide" => 'project.pr_new'} {{project.name}}
+        %input.form-control{type: 'text', "ng-model" => "project.name", placeholder: 'Start typing here to create a project...', "ng-show" => 'project.pr_new', "ng-class" => "{error: project.error==true}"}
+      .col-md-2.pull-right
         .pull-right
-          = link_to '', edit_project_path(project), class: 'glyphicon glyphicon-pencil'
-          = link_to '', project, :method => :delete, :data => { :confirm => 'Are you sure?' }, class: 'glyphicon glyphicon-trash'
-    .row.add_task
-      .col-md-12
-        .input-group
-          %span.input-group-addon.glyphicon.glyphicon-plus
-          %input.form-control{type: 'text', placeholder: 'Start typing here to create a task...'}
-          %span.input-group-btn
-            %button.btn.btn-default{type: "button"} Add Task
-    - project.tasks.each do |task|
-      .row.task
-        .col-md-1.chk
-          %input{type: "checkbox"}
-        .col-md-10
-          = task.name
-        .col-md-1.action
-          .pull-right
-            = link_to '', edit_project_task_path(project, task), class: 'glyphicon glyphicon-sort'
-            = link_to '', edit_project_task_path(project, task), class: 'glyphicon glyphicon-pencil'
-            = link_to '', project_task_path(project, task), :method => :delete, :data => { :confirm => 'Are you sure?' }, class: 'glyphicon glyphicon-trash'
+          %a.glyphicon.glyphicon-ok{href: '', "ng-show" => 'project.pr_new', "ng-click" => "prUpdate(project)"}
+          %a.glyphicon.glyphicon-pencil{href: '',"ng-hide" => 'project.pr_new', "ng-click" => "prEdit(project)"}
+          %a.glyphicon.glyphicon-trash{href: '', "ng-click" => "prDestroy($index)"}
 
-.container
-  %button.add_project
-    %span.glyphicon.glyphicon-plus
-    Add TODO List
-  / = link_to 'Add TODO List', new_project_path
+    .task{"ng-controller" => "TasksCtrl"}
+      .row.add_task
+        .col-md-12
+          %form{"ng-submit" => "addTask(project, newTask)", novalidate: '' }
+            .input-group
+              %span.input-group-addon.glyphicon.glyphicon-plus
+              %input.form-control{type: 'text', "ng-model" => "newTask.name", placeholder: 'Start typing here to create a task...'}
+              %span.input-group-btn
+                %button.btn.btn-default{type: "submit"}
+                  Add Task
+      .sort_task{"ui-sortable" => "sortableOptionsList(project)", "ng-model" => "project.tasks"}
+        .row.task{"ng-repeat" => "task in project.tasks"}
+          .col-md-1.chk
+            %input{type: "checkbox", "ng-model" => "task.done", "ng-change" => "updTask(project, $index)"}
+          .col-md-10{"ng-class" => "{done: task.done==true, deadline: check_deadline(task)}", "ng-hide" => 'task.edit'}
+            {{task.name}}
+          .edit_task{"ng-show" => 'task.edit'}
+            .col-md-8
+              %input.form-control{type: 'text', "ng-model" => "task.name", placeholder: 'Start typing here to create a project...'}
+            .col-md-2
+              %input.form-control.dt{type: "text", "ng-model" => "task.deadline", "datepicker" => ''}
+          .col-md-1.action
+            .pull-right
+              %a.glyphicon.sortable-activeitem.glyphicon-sort{href: '', "ng-click" => "sortTask(project, $index)"}
+              %a.glyphicon.glyphicon-pencil{href: '', "ng-click" => "task.edit = true", "ng-hide" => 'task.edit'}
+              %a.glyphicon.glyphicon-ok{href: '', "ng-click" => "updTask(project, $index)", "ng-show" => 'task.edit'}
+              %a.glyphicon.glyphicon-trash{href: '', "ng-click" => "destroyTask(project, $index)"}
+
+  .container.add_project
+    %form{"ng-submit" => "addProject()"}
+      %button{type: 'submit'}
+        %span.glyphicon.glyphicon-plus
+        Add TODO List

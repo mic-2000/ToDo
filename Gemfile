@@ -15,6 +15,7 @@ gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.0.0'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
+gem 'jquery-ui-rails'
 
 gem 'angularjs-rails'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -41,10 +42,12 @@ group :development, :test do
   gem 'spring'
   gem 'quiet_assets'
   gem 'byebug'
+  gem 'faker'
 end
 
 group :test do
   gem 'rspec-rails'
   gem 'factory_girl_rails'
-  gem 'database_cleaner', '~> 0.9.1'
+  gem 'database_cleaner'
+  gem 'shoulda-matchers'
 end

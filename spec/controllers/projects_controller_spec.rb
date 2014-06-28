@@ -52,21 +52,6 @@ RSpec.describe ProjectsController, :type => :controller do
     end
   end
 
-  describe "GET new" do
-    it "assigns a new project as @project" do
-      get :new, {}, valid_session
-      expect(assigns(:project)).to be_a_new(Project)
-    end
-  end
-
-  describe "GET edit" do
-    it "assigns the requested project as @project" do
-      project = Project.create! valid_attributes
-      get :edit, {:id => project.to_param}, valid_session
-      expect(assigns(:project)).to eq(project)
-    end
-  end
-
   describe "POST create" do
     describe "with valid params" do
       it "creates a new Project" do

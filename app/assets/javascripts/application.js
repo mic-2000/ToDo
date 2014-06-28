@@ -12,8 +12,11 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery.ui.sortable
 //= require angular
 //= require angular-resource
+//= require sortable
 //= require bootstrap
-//= require_tree ./angular
+//= require bootstrap-datepicker
 //= require_tree .
+
