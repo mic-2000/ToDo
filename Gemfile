@@ -51,6 +51,7 @@ group :development, :test do
 end
 
 group :test do
+  gem 'simplecov', :require => false
   gem 'rspec-rails', '~> 3.0.0'
   gem 'factory_girl_rails'
   gem 'database_cleaner'
