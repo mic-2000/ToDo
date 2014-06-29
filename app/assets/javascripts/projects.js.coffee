@@ -2,14 +2,16 @@
 
 app = angular.module("ToDo", ["ngResource", "ui.sortable"])
 
-app.factory "Project", ($resource) ->
+app.factory "Project", [ "$resource", ($resource) ->
   $resource("projects/:id", {id: "@id"}, {update: {method: "PUT"}})
+]
 
-app.factory 'Task', ($resource) ->
+app.factory 'Task', ["$resource", ($resource) ->
   $resource('/projects/:projectId/tasks/:sort:id',
     {projectId: '@projectId', sort: '@sort', id: '@id'},
     {update: {method: "PUT"},
     sort: {method: 'POST', params: {sort: 'sort'}}})
+]
 
 app.directive "datepicker", ->
   require: "ngModel"
@@ -19,7 +21,7 @@ app.directive "datepicker", ->
       $(this).datepicker "hide"
 
 
-@ProjectsCtrl = (Project, $scope, Task) ->
+@ProjectsCtrl = ["Project", "$scope", "Task", (Project, $scope, Task) ->
   $scope.projects = Project.query()
 
   $scope.addProject = ->
@@ -40,9 +42,9 @@ app.directive "datepicker", ->
   $scope.prDestroy = (index) ->
     $scope.projects[index].$delete() unless $scope.projects[index].id == undefined
     $scope.projects.splice index, 1
+]
 
-
-@TasksCtrl = (Task, $scope) ->
+@TasksCtrl = ["Task", "$scope", (Task, $scope) ->
 
   $scope.check_deadline = (task) ->
     return false if task.deadline == null
@@ -91,3 +93,4 @@ app.directive "datepicker", ->
 
   $scope.sortableOptionsList = (project) ->
     createOptions(project)
+]
