@@ -46,6 +46,7 @@ app.directive "datepicker", ->
 
   $scope.check_deadline = (task) ->
     return false if task.deadline == null
+    return false if task.done == true
     return new Date(task.deadline).valueOf() < new Date().valueOf()
 
   $scope.addTask = (project, newTask) ->

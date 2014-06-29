@@ -23,5 +23,8 @@ RSpec.describe TasksController, :type => :routing do
       expect(:delete => "projects/1/tasks/1").to route_to("tasks#destroy", :id => "1", project_id: '1', format: :json)
     end
 
+    it "routes to #sort" do
+      expect(:post => "projects/1/tasks/sort").to route_to("tasks#sort", project_id: '1', format: :json)
+    end
   end
 end

@@ -8,40 +8,39 @@
         %span.glyphicon.glyphicon-calendar
       .col-md-9
         %span.pr_name{"ng-hide" => 'project.pr_new'} {{project.name}}
-        %input.form-control{type: 'text', "ng-model" => "project.name", placeholder: 'Start typing here to create a project...', "ng-show" => 'project.pr_new', "ng-class" => "{error: project.error==true}"}
+        %input.form-control{type: 'text', name: 'new_pr', "ng-model" => "project.name", placeholder: 'Start typing here to create a project...', "ng-show" => 'project.pr_new', "ng-class" => "{error: project.error==true}"}
       .col-md-2.pull-right
         .pull-right
-          %a.glyphicon.glyphicon-ok{href: '', "ng-show" => 'project.pr_new', "ng-click" => "prUpdate(project)"}
-          %a.glyphicon.glyphicon-pencil{href: '',"ng-hide" => 'project.pr_new', "ng-click" => "prEdit(project)"}
-          %a.glyphicon.glyphicon-trash{href: '', "ng-click" => "prDestroy($index)"}
-
+          %a#save.glyphicon.glyphicon-ok{href: '', "ng-show" => 'project.pr_new', "ng-click" => "prUpdate(project)"}
+          %a#edit.glyphicon.glyphicon-pencil{href: '',"ng-hide" => 'project.pr_new', "ng-click" => "prEdit(project)"}
+          %a#destroy.glyphicon.glyphicon-trash{href: '', "ng-click" => "prDestroy($index)"}
     .task{"ng-controller" => "TasksCtrl"}
-      .row.add_task
+      .row.add_task{"ng-hide" => 'project.id==null'}
         .col-md-12
           %form{"ng-submit" => "addTask(project, newTask)", novalidate: '' }
             .input-group
               %span.input-group-addon.glyphicon.glyphicon-plus
-              %input.form-control{type: 'text', "ng-model" => "newTask.name", placeholder: 'Start typing here to create a task...'}
+              %input.form-control{type: 'text', name: 'new_task', "ng-model" => "newTask.name", placeholder: 'Start typing here to create a task...'}
               %span.input-group-btn
                 %button.btn.btn-default{type: "submit"}
                   Add Task
       .sort_task{"ui-sortable" => "sortableOptionsList(project)", "ng-model" => "project.tasks"}
         .row.task{"ng-repeat" => "task in project.tasks"}
           .col-md-1.chk
-            %input{type: "checkbox", "ng-model" => "task.done", "ng-change" => "updTask(project, $index)"}
+            %input{type: "checkbox", name: 'done', "ng-model" => "task.done", "ng-change" => "updTask(project, $index)"}
           .col-md-10{"ng-class" => "{done: task.done==true, deadline: check_deadline(task)}", "ng-hide" => 'task.edit'}
             {{task.name}}
           .edit_task{"ng-show" => 'task.edit'}
             .col-md-8
-              %input.form-control{type: 'text', "ng-model" => "task.name", placeholder: 'Start typing here to create a project...'}
+              %input.form-control{type: 'text', name: 'edit_name', "ng-model" => "task.name", placeholder: 'Start typing here to create a project...'}
             .col-md-2
-              %input.form-control.dt{type: "text", "ng-model" => "task.deadline", "datepicker" => ''}
+              %input.form-control.dt{type: "text", name: 'deadline', "ng-model" => "task.deadline", "datepicker" => ''}
           .col-md-1.action
             .pull-right
-              %a.glyphicon.sortable-activeitem.glyphicon-sort{href: '', "ng-click" => "sortTask(project, $index)"}
-              %a.glyphicon.glyphicon-pencil{href: '', "ng-click" => "task.edit = true", "ng-hide" => 'task.edit'}
-              %a.glyphicon.glyphicon-ok{href: '', "ng-click" => "updTask(project, $index)", "ng-show" => 'task.edit'}
-              %a.glyphicon.glyphicon-trash{href: '', "ng-click" => "destroyTask(project, $index)"}
+              %a#sort.glyphicon.sortable-activeitem.glyphicon-sort{href: '', "ng-click" => "sortTask(project, $index)"}
+              %a#edit.glyphicon.glyphicon-pencil{href: '', "ng-click" => "task.edit = true", "ng-hide" => 'task.edit'}
+              %a#save.glyphicon.glyphicon-ok{href: '', "ng-click" => "updTask(project, $index)", "ng-show" => 'task.edit'}
+              %a#destroy.glyphicon.glyphicon-trash{href: '', "ng-click" => "destroyTask(project, $index)"}
 
   .container.add_project
     %form{"ng-submit" => "addProject()"}
