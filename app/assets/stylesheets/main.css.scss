@@ -83,10 +83,15 @@ input.error {
     input.form-control {
       height: 25px;
     }
-
-    a, a:hover  {
+    &:hover {
+      a {
+        color: #98b0d2;
+        display: inline;
+      }
+    }
+    a {
+      display: none;
       padding: 0px 3px;
-      color: #98b0d2;
       text-decoration: none;
     }
 
@@ -144,10 +149,13 @@ input.error {
     }
     &:hover {
       background: #fcfed5;
+      a {
+        color: #aaaaaa;
+      }
     }
-    a, a:hover  {
+    a {
       padding: 0px 3px;
-      color: #aaaaaa;
+      color: white;
       text-decoration: none;
     }
   }
