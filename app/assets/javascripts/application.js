@@ -14,8 +14,10 @@
 //= require jquery_ujs
 //= require jquery.ui.sortable
 //= require angular
+//= require angular-sanitize
 //= require angular-resource
 //= require sortable
+//= require ng-upload
 //= require bootstrap
 //= require bootstrap-datepicker
 //= require_tree .

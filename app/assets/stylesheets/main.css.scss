@@ -146,6 +146,10 @@ input.error {
     .col-md-1.action {
       float: right;
       width: 100px;
+      padding: 0 5px 0 0;
+    }
+    .col-md-10 {
+      padding-right: 5px;
     }
     &:hover {
       background: #fcfed5;
@@ -157,6 +161,31 @@ input.error {
       padding: 0px 3px;
       color: white;
       text-decoration: none;
+    }
+    .comment {
+      margin-top: 20px;
+
+      .row .add_comment {
+        margin-top: 20px;
+        padding-left: 30px;
+        input[type="file"] {
+          padding-top: 10px;
+        }
+      }
+      .row.comment {
+        border: 1px solid;
+        border-radius: 10px;
+        margin: 5px 10px;
+        padding: 5px;
+        background: wheat;
+        .col-md-1.pull-right, .col-md-10{
+          padding-left: 0px;
+          a, a:hover {
+            color: #3a5ca1;
+          }
+
+        }
+      }
     }
   }
   .row.task .deadline {

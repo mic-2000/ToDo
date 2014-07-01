@@ -7,5 +7,6 @@ json.array! @projects do |project|
     json.done       task.done
     json.deadline   task.deadline
     json.priority   task.priority
+    json.show_comment  false
   end
 end

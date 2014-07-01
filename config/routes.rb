@@ -8,4 +8,6 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :comments, :defaults => {format: :json}, only: [:index, :create, :destroy]
+
 end

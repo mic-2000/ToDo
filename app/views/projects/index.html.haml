@@ -37,10 +37,32 @@
               %input.form-control.dt{type: "text", name: 'deadline', "ng-model" => "task.deadline", "datepicker" => ''}
           .col-md-1.action
             .pull-right
+
+              %a#comment.glyphicon{href: '', "ng-controller" => "CommentsCtrl", "ng-class" => "{'glyphicon-chevron-up': task.show_comment==true, 'glyphicon-chevron-down': task.show_comment==false}", "ng-click" => "loadComment(task)"}
               %a#sort.glyphicon.sortable-activeitem.glyphicon-sort{href: '', "ng-click" => "sortTask(project, $index)"}
               %a#edit.glyphicon.glyphicon-pencil{href: '', "ng-click" => "task.edit = true", "ng-hide" => 'task.edit'}
               %a#save.glyphicon.glyphicon-ok{href: '', "ng-click" => "updTask(project, $index)", "ng-show" => 'task.edit'}
               %a#destroy.glyphicon.glyphicon-trash{href: '', "ng-click" => "destroyTask(project, $index)"}
+          .panel-body{"ng-show" => 'task.show_comment'}
+            .comment{"ng-controller" => "CommentsCtrl"}
+              .row.comment{"ng-repeat" => "comment in task.comments"}
+                .col-md-10
+                  {{comment.body}}
+                  .row.pull-right
+                    %div{"ng-bind-html" => "comment.file_name"}
+                .col-md-1.pull-right
+                  %a#destroy.glyphicon.glyphicon-trash{href: '', "ng-click" => "destroyComment(task, $index)"}
+              .row
+                .add_comment
+                  %form{"action" => "/comments", 'ng-upload' => "complete(content, task)", "ng-upload-loading" => "loading()"}
+                    .col-md-10
+                      %input.form-control{type: 'text', name: 'body', "ng-model" => "newComment.body", placeholder: 'Start typing here to create a comment...', required: ''}
+                      %input.hide{type: "text", name:"task_id", "ng-model" => "task.id"}
+                      %input{type: 'file',  name: 'file_name' }
+                    .col-md-1
+                      %button.btn.btn-default{type: "submit"}
+                        Add
+
 
   .container.add_project
     %form{"ng-submit" => "addProject()"}
