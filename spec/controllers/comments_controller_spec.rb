@@ -20,12 +20,12 @@ RSpec.describe CommentsController, :type => :controller do
     describe "with valid params" do
       it "creates a new Comment" do
         expect {
-          post :create, {body: 'Text', task_id: @task.id, format: :json}
+          post :create, {comment: {body: 'Text'}, task_id: @task.id, format: :json}
         }.to change(Comment, :count).by(1)
       end
 
       it "assigns a newly created comment as @comment" do
-        post :create, {body: 'Text', task_id: @task.id, format: :json}
+        post :create, {comment: {body: 'Text'}, task_id: @task.id, format: :json}
         expect(assigns(:comment)).to be_a(Comment)
         expect(assigns(:comment)).to be_persisted
       end
@@ -33,7 +33,7 @@ RSpec.describe CommentsController, :type => :controller do
 
     describe "with invalid params" do
       it "assigns a newly created but unsaved comment as @comment" do
-        post :create, {body: '', task_id: @task.id, format: :json}
+        post :create, {comment: {body: ''}, task_id: @task.id, format: :json}
         expect(assigns(:comment)).to be_a_new(Comment)
       end
     end

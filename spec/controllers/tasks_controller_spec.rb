@@ -11,14 +11,6 @@ RSpec.describe TasksController, :type => :controller do
 
   let(:invalid_attributes) { {name: ''} }
 
-  describe "GET index" do
-    it "assigns all tasks as @tasks" do
-      task = create(:task, project: @project)
-      get :index, {project_id: @project.id, format: :json}
-      expect(assigns(:tasks)).to eq([task])
-    end
-  end
-
   describe "POST create" do
     describe "with valid params" do
       it "creates a new Task" do

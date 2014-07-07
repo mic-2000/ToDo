@@ -1,5 +1,5 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: [:show, :update, :destroy]
+  load_and_authorize_resource except: [:create]
 
   def index
     @projects = current_user.projects
@@ -29,10 +29,6 @@ class ProjectsController < ApplicationController
   end
 
   private
-    def set_project
-      @project = current_user.projects.find(params[:id])
-    end
-
     def project_params
       params.require(:project).permit(:name, :priority)
     end

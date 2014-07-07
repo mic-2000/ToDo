@@ -56,9 +56,9 @@
                 .add_comment
                   %form{"action" => "/comments", 'ng-upload' => "complete(content, task)", "ng-upload-loading" => "loading()"}
                     .col-md-10
-                      %input.form-control{type: 'text', name: 'body', "ng-model" => "newComment.body", placeholder: 'Start typing here to create a comment...', required: ''}
+                      %input.form-control{type: 'text', name: 'comment[body]', "ng-model" => "body", placeholder: 'Start typing here to create a comment...', required: ''}
                       %input.hide{type: "text", name:"task_id", "ng-model" => "task.id"}
-                      %input{type: 'file',  name: 'file_name' }
+                      %div{"file-select" => "file"}
                     .col-md-1
                       %button.btn.btn-default{type: "submit"}
                         Add

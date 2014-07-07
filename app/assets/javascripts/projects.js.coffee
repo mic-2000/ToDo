@@ -25,6 +25,17 @@ app.directive "datepicker", ->
       $(this).datepicker "hide"
 
 
+app.directive "fileSelect", ->
+  template = "<input type=\"file\" name=\"comment[file_name]\"/>"
+  (scope, elem, attrs) ->
+    selector = $(template)
+    elem.append selector
+    selector.bind "change", (event) ->
+      scope.$apply ->
+        scope[attrs.fileSelect] = event.originalEvent.target.files
+    scope.$watch attrs.fileSelect, (file) ->
+      selector.val file unless file?
+
 
 
 @ProjectsCtrl = ["Project", "$scope", "Task", (Project, $scope, Task) ->
@@ -102,6 +113,8 @@ app.directive "datepicker", ->
 
 
 @CommentsCtrl = ["Comment", "$scope", (Comment, $scope) ->
+  $scope.file = null;
+
   $scope.loadComment = (task) ->
     task.show_comment = !task.show_comment
     task.comments = Comment.query({task_id: task.id}) if task.show_comment && task.comments == undefined
@@ -115,4 +128,6 @@ app.directive "datepicker", ->
 
   $scope.complete = (content, task) ->
     task.comments.push(content)
+    $scope.body = null
+    $scope.file = null
 ]

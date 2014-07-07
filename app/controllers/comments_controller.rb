@@ -1,5 +1,6 @@
 class CommentsController < ApplicationController
-  before_action :set_task
+  load_and_authorize_resource :task
+  load_and_authorize_resource :through => :task, except: [:create]
 
   def index
     @comments = @task.comments
@@ -15,17 +16,12 @@ class CommentsController < ApplicationController
   end
 
   def destroy
-    @comment = @task.comments.find(params[:id])
     @comment.destroy
     head :no_content
   end
 
   private
-    def set_task
-      @task = Task.find(params[:task_id])
-    end
-
     def comment_params
-      params.permit(:body, :file_name, :task_id)
+      params.require(:comment).permit(:body, :file_name, :task_id)
     end
 end
