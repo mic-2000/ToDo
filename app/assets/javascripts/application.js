@@ -20,5 +20,6 @@
 //= require ng-upload
 //= require bootstrap
 //= require bootstrap-datepicker
-//= require_tree .
+//= require angular/app.js
+//= require_tree ./angular
 

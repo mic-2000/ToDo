@@ -5,7 +5,7 @@ class TasksController < ApplicationController
   def create
     @task = @project.tasks.new(task_params)
     if @task.save
-      render json: @task, status: :created
+      render :show, status: :created
     else
       render json: @task.errors, status: :unprocessable_entity
     end
@@ -13,7 +13,7 @@ class TasksController < ApplicationController
 
   def update
     if @task.update(task_params)
-      render  json: @task, status: :ok
+      render json: @task, status: :ok
     else
       render json: @task.errors, status: :unprocessable_entity
     end

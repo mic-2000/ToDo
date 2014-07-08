@@ -37,7 +37,6 @@
               %input.form-control.dt{type: "text", name: 'deadline', "ng-model" => "task.deadline", "datepicker" => ''}
           .col-md-1.action
             .pull-right
-
               %a#comment.glyphicon{href: '', "ng-controller" => "CommentsCtrl", "ng-class" => "{'glyphicon-chevron-up': task.show_comment==true, 'glyphicon-chevron-down': task.show_comment==false}", "ng-click" => "loadComment(task)"}
               %a#sort.glyphicon.sortable-activeitem.glyphicon-sort{href: '', "ng-click" => "sortTask(project, $index)"}
               %a#edit.glyphicon.glyphicon-pencil{href: '', "ng-click" => "task.edit = true", "ng-hide" => 'task.edit'}
