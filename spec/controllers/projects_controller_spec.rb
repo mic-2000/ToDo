@@ -16,13 +16,13 @@ RSpec.describe ProjectsController, :type => :controller do
       get :index, {}
       expect(assigns(:projects)).to eq([project])
     end
-  end
 
-  describe "GET show" do
-    it "assigns the requested project as @project" do
+    it "assigns only own projects" do
       project = create(:project, user: @user)
-      get :show, {:id => project.to_param, format: :json}
-      expect(assigns(:project)).to eq(project)
+      project1 = create(:project)
+      get :index, {}
+      expect(assigns(:projects)).to eq([project])
+      expect(assigns(:projects)).not_to eq([project1])
     end
   end
 
@@ -65,6 +65,12 @@ RSpec.describe ProjectsController, :type => :controller do
         put :update, {:id => project.to_param, :project => valid_attributes, format: :json}
         expect(assigns(:project)).to eq(project)
       end
+
+      it "should not update someone else's project" do
+        project = create(:project)
+        put :update, {:id => project.to_param, :project => valid_attributes, format: :json}
+        expect(assigns(:current_ability)).to_not be_able_to(:update, project)
+      end
     end
 
     describe "with invalid params" do
@@ -82,6 +88,12 @@ RSpec.describe ProjectsController, :type => :controller do
       expect {
         delete :destroy, {:id => project.to_param, format: :json}
       }.to change(Project, :count).by(-1)
+    end
+
+    it "should not destroy someone else's project" do
+      project = create(:project)
+      delete :destroy, {:id => project.to_param, format: :json}
+      expect(assigns(:current_ability)).to_not be_able_to(:destroy, project)
     end
   end
 

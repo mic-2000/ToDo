@@ -50,6 +50,12 @@ RSpec.describe TasksController, :type => :controller do
         put :update, {:id => task.to_param, :task => valid_attributes, project_id: @project.id, format: :json}
         expect(assigns(:task)).to eq(task)
       end
+
+      it "should not update someone else's task" do
+        task = create(:task)
+        put :update, {:id => task.to_param, :task => valid_attributes, project_id: task.project.id, format: :json}
+        expect(assigns(:current_ability)).to_not be_able_to(:update, task)
+      end
     end
 
     describe "with invalid params" do
@@ -67,6 +73,12 @@ RSpec.describe TasksController, :type => :controller do
       expect {
         delete :destroy, {:id => task.to_param, project_id: @project.id, format: :json}
       }.to change(Task, :count).by(-1)
+    end
+
+    it "should not destroy someone else's task" do
+      task = create(:task)
+      delete :destroy, {:id => task.to_param, project_id: task.project.id, format: :json}
+      expect(assigns(:current_ability)).to_not be_able_to(:destroy, task)
     end
   end
 

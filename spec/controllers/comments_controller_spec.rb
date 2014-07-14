@@ -46,6 +46,12 @@ RSpec.describe CommentsController, :type => :controller do
         delete :destroy, {:id => comment.to_param, task_id: @task.id, format: :json}
       }.to change(Comment, :count).by(-1)
     end
+
+    it "should not destroy someone else's comment" do
+      comment = create(:comment)
+      delete :destroy, {:id => comment.to_param, task_id: comment.task.id, format: :json}
+      expect(assigns(:current_ability)).to_not be_able_to(:destroy, comment)
+    end
   end
 
 end
